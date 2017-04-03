@@ -26,11 +26,7 @@
       </ul>
       <ul class="nav navbar-nav">
         <li><a href="pet-portal.php">Search</a></li>
-      </ul>
-<!--      <ul class="nav navbar-nav navbar-right">
-        <li><a href="register.php">Signup  <i class="fa fa-user-plus"></i></a></li>
-<!--         <li><a href="#about">Login  <i class="fa fa-user"></i></a></li>
- -->      
+      </ul>    
     </div>
   </div>
  </nav>
@@ -42,7 +38,7 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
  
  <body> 
 <?php
-
+session_start();
 if(isset($_POST['submit'])) 
 {
 	$query = "SELECT * FROM Users u WHERE u.userid = '".$_POST['username']."' AND u.password = '".$_POST['password']."';";
@@ -53,17 +49,14 @@ if(isset($_POST['submit']))
             exit(); 
         } 
 
-		if ($row = pg_fetch_row($result)){
-			echo " <script> alert(Welcome back ".$_POST['username'].".); 
+		if ($row = pg_fetch_row($result)) {
+      $_SESSION['login_user'] = $_POST['username'];
+			echo "<script> alert('Welcome back ".$_POST['username'].".'); 
 		    window.location.href='pet-portal.php'; </script>";
-		} else{
-			echo "Error with query: ";
-            
+		} else {
+      echo "<script> alert('Sorry, you have entered the wrong username or password :(')</script>";
 		}
-        
-        pg_close(); 
-
-
+    pg_close(); 
 }
 ?>
 

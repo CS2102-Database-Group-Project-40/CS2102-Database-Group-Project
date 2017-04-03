@@ -33,7 +33,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="register.php">Signup  <i class="fa fa-user-plus"></i></a></li>
          <li><a href="login.php">Login  <i class="fa fa-user"></i></a></li>
-       </ul>
+      </ul>
     </div>
   </div>
  </nav>
@@ -58,6 +58,8 @@ $row = pg_fetch_row($result);
 $averageBid = $row[0];
 
 echo "<td>" . "The highest bid is currently $" . $highestBid . ", and the average bid is $" . number_format((float)$averageBid, 2, '.', '')  . "! Join us and earn a quick buck now!" . "</td>";
+session_start();
+echo $_SESSION['login_user'];
 ?>
 
 <tr>

@@ -72,14 +72,17 @@
 <?php
 $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar.elephantsql.com:5432/plwneqlk")
     or die('Could not connect: ' . pg_last_error());
+
 $query = "SELECT price FROM Bids WHERE price >= ALL(SELECT price FROM Bids)";
 $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 $row = pg_fetch_row($result);
 $highestBid = $row[0];
+
 $query = "SELECT AVG(price) FROM Bids";
 $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 $row = pg_fetch_row($result);
 $averageBid = $row[0];
+
 ?>
 <div class="row text-center" style="padding-top:10px;">
   <p style="font-size:18px;">
@@ -96,8 +99,8 @@ $averageBid = $row[0];
   <div class="col-md-10 col-md-offset-1">
 
 <?php
-if(isset($_GET['quicklocation']))
-  {
+if(isset($_GET['formSubmit']) ||  isset($_GET['quicklocation'])) {
+  
     if ($_GET['quicklocation'] == 'Bishan')
     {
       echo "<h2>Showing Results in Bishan</h2>";
@@ -122,10 +125,7 @@ if(isset($_GET['quicklocation']))
     {
       echo "<h2>Showing Results in Pasir Ris</h2>";
       $query = "SELECT userid, name, email, description FROM Pasir_ris_caretakers";
-    }
-  }
-  
-if(isset($_GET['formSubmit'])) {
+    } else {
       echo "<h2>Showing Results";
       if(isset($_GET['name']) && $_GET['name'] !== '' && isset($_GET['breed']) && $_GET['breed'] !== '') {
         echo " for " . $_GET['name']. " and " . $_GET['breed'];
@@ -138,9 +138,8 @@ if(isset($_GET['formSubmit'])) {
         echo " in ". $_GET['location'];
       }
       echo "</h2>";
-    $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['location']."%')) AND (isA = 'caretaker' OR isA = 'both')";
-  
-}
+    $query = "SELECT userid, name, email, description FROM USERS WHERE ((name LIKE UPPER('%".$_GET['name']."%')OR UPPER (userid) LIKE UPPER('%".$_GET['name']."%')) AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['location']."%')) AND (isA = 'caretaker' OR isA = 'both')";
+  }
       /** Debug mode
       echo "<b>SQL:   </b>".$query."<br><br>";
       **/
@@ -165,6 +164,7 @@ if(isset($_GET['formSubmit'])) {
       echo "</tbody></table></div>";
       pg_free_result($result);
 
+}
 ?>
 </div>
 </div>

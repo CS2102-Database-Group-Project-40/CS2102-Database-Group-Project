@@ -99,10 +99,7 @@ $averageBid = $row[0];
   <div class="col-md-10 col-md-offset-1">
 
 <?php
-
-if(isset($_GET['formSubmit'])) {
-
-  if(isset($_GET['quicklocation']))
+if(isset($_GET['quicklocation']))
   {
     if ($_GET['quicklocation'] == 'Bishan')
     {
@@ -128,7 +125,35 @@ if(isset($_GET['formSubmit'])) {
     {
       echo "<h2>Showing Results in Pasir Ris</h2>";
       $query = "SELECT userid, name, email, description FROM Pasir_ris_caretakers";
-    } else {
+    }
+	      $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+
+
+      echo "<div class='panel panel-default'><table class='table table-striped table-hover table-bordered table-responsive'>
+      <thead class='thead-inverse'>
+      <tr>
+      <th>Username</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Description</th>
+      </tr>
+      </thead><tbody>";
+
+      while ($row = pg_fetch_row($result)){
+        echo "<tr>";
+        echo "<td><a href=profile.php?user=" . $row[0] . ">".$row[0]."</a></td>";
+        echo "<td>" . $row[1] . "</td>";
+        echo "<td>" . $row[2] . "</td>";
+          echo "<td>" . $row[3] . "</td>";
+        echo "</tr>";
+      }
+      echo "</tbody></table></div>";
+
+      pg_free_result($result);
+  }
+  
+if(isset($_GET['formSubmit'])) {
+
       echo "<h2>Showing Results";
       if(isset($_GET['name']) && $_GET['name'] !== '' && isset($_GET['breed']) && $_GET['breed'] !== '') {
         echo " for " . $_GET['name']. " and " . $_GET['breed'];
@@ -143,7 +168,7 @@ if(isset($_GET['formSubmit'])) {
       }
       echo "</h2>";
     $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['location']."%')) AND (isA = 'caretaker' OR isA = 'both')";
-  }
+  
       /** Debug mode
       echo "<b>SQL:   </b>".$query."<br><br>";
       **/
@@ -172,7 +197,7 @@ if(isset($_GET['formSubmit'])) {
 
       pg_free_result($result);
 }
-}
+
 
 ?>
 </div>

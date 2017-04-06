@@ -1,3 +1,4 @@
+
 <html>
 <head>
   <title>Pets Paradise</title>
@@ -29,8 +30,8 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="register.php">Signup  <i class="fa fa-user-plus"></i></a></li>
-        <li><a href="login.php">Login  <i class="fa fa-user"></i></a></li>
-      </ul>
+<!--         <li><a href="#about">Login  <i class="fa fa-user"></i></a></li>
+ -->      </ul>
     </div>
   </div>
  </nav>
@@ -41,15 +42,12 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 ?>
 
 <?php
-
 	if(isset($_GET['user'])) {
     $userid = $_GET['user'];
     $query = "SELECT name, email, address, description FROM Users WHERE userid='$userid'";
     $result = pg_query($query) or die('Query failed: ' . pg_last_error());
     $row = pg_fetch_row($result);
-
     echo"
-
     <div class='row'>
     <div class='col-md-5 col-md-offset-1'>
     <h2>". $userid . "'s Profile</h2>
@@ -64,7 +62,6 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
   
   $today = date("Y-m-d");
   $query = "SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid' AND price >= ALL(SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid')";
-
   $result = pg_query($query) or die('Query failed: ' . pg_last_error());
   if (pg_num_rows($result) > 0) {
     $row = pg_fetch_row($result);
@@ -73,14 +70,10 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
   } else {
     echo "no bids";
   }
-
 		echo "<div class='col-md-5'>
     <h2>Received bids</h2>";
-
 		$query = "SELECT b.petownerid, p.name, p.breed, b.fromDate, b.toDate, b.price FROM Bids b INNER JOIN Pets p ON p.owner = b.petownerid WHERE b.caretakerid='$userid'";
-
 		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
-
 		echo "<div class='panel panel-default'><table class='table table-striped table-hover table-bordered table-responsive'>
 			    <tr>
 			    <th>Pet Owner</th>
@@ -103,12 +96,8 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 		echo "</table></div>
     </div>
     </div>";
-
-
-
 		pg_free_result($result);
 	}
-
 ?>
 
 </body>

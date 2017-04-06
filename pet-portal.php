@@ -27,13 +27,10 @@
       <ul class="nav navbar-nav">
         <li><a href="pet-portal.php">Search</a></li>
       </ul>
-	  <ul class="nav navbar-nav">
-        <li><a href="mybid.php">My Bids</a></li>
-      </ul>	  
       <ul class="nav navbar-nav navbar-right">
         <li><a href="register.php">Signup  <i class="fa fa-user-plus"></i></a></li>
-         <li><a href="login.php">Login  <i class="fa fa-user"></i></a></li>
-      </ul>
+<!--         <li><a href="#about">Login  <i class="fa fa-user"></i></a></li>
+ -->      </ul>
     </div>
   </div>
  </nav>
@@ -86,12 +83,6 @@ $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 $row = pg_fetch_row($result);
 $averageBid = $row[0];
 
-<<<<<<< HEAD
-echo "<td>" . "The highest bid is currently $" . $highestBid . ", and the average bid is $" . number_format((float)$averageBid, 2, '.', '')  . "! Join us and earn a quick buck now!" . "</td>";
-session_start();
-echo $_SESSION['login_user'];
-=======
->>>>>>> eecfb95888cbc153b031e3a395c22ae056e21f28
 ?>
 <div class="row text-center" style="padding-top:10px;">
   <p style="font-size:18px;">
@@ -103,86 +94,6 @@ echo $_SESSION['login_user'];
 </div>
 </div>
 
-<<<<<<< HEAD
-if(isset($_GET['formSubmit'])) 
-{
-    $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['location']."%')) AND (isA = 'caretaker' OR isA = 'both')";
-    echo "<b>SQL:   </b>".$query."<br><br>";
-    $result = pg_query($query) or die('Query failed: ' . pg_last_error());
-    echo "<table border=\"1\" >
-    <col width=\"15%\">
-    <col width=\"15%\">
-    <col width=\"15%\">
-    <col width=\"55%\">
-    <tr>
-    <th>Username</th>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Description</th>
-    </tr>";
-
-    while ($row = pg_fetch_row($result)){
-      echo "<tr>";
-      echo "<td><a href=profile.php?user=" . $row[0] . ">".$row[0]."</a></td>";
-      echo "<td>" . $row[1] . "</td>";
-      echo "<td>" . $row[2] . "</td>";
-        echo "<td>" . $row[3] . "</td>";
-      echo "</tr>";
-    }
-    echo "</table>";
-    
-    pg_free_result($result);
-
-} elseif(isset($_GET['quicklocation']))
-{
-  if ($_GET['quicklocation'] == 'Bishan') 
-  {
-    $query = "SELECT userid, name, email, description FROM Bishan_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Toa Payoh') 
-  { 
-     $query = "SELECT userid, name, email, description FROM Toa_payoh_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Kent Ridge') 
-  {
-    $query = "SELECT userid, name, email, description FROM Kent_ridge_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Jurong') 
-  {
-    $query = "SELECT userid, name, email, description FROM Jurong_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Woodlands') 
-  {
-    $query = "SELECT userid, name, email, description FROM Woodlands_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Pasir Ris') 
-  {
-    $query = "SELECT userid, name, email, description FROM Pasir_ris_caretakers";
-  } else 
-  {
-    $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['quicklocation']."%')) AND (isA = 'caretaker' OR isA = 'both')";
-  }
-    echo "<b>SQL:   </b>".$query."<br><br>";
-    $result = pg_query($query) or die('Query failed: ' . pg_last_error());
-    echo "<table border=\"1\" >
-    <col width=\"15%\">
-    <col width=\"15%\">
-    <col width=\"15%\">
-    <col width=\"55%\">
-    <tr>
-    <th>Username</th>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Description</th>
-    </tr>";
-
-    while ($row = pg_fetch_row($result)){
-      echo "<tr>";
-      echo "<td><a href=profile.php?user=" . $row[0] . ">".$row[0]."</a></td>";
-      echo "<td>" . $row[1] . "</td>";
-      echo "<td>" . $row[2] . "</td>";
-        echo "<td>" . $row[3] . "</td>";
-      echo "</tr>";
-    }
-    echo "</table>";
-    
-    pg_free_result($result);
-=======
 
 <div class="row"  id='results'>
   <div class="col-md-10 col-md-offset-1">
@@ -253,7 +164,6 @@ if(isset($_GET['formSubmit']) ||  isset($_GET['quicklocation'])) {
       echo "</tbody></table></div>";
       pg_free_result($result);
 
->>>>>>> eecfb95888cbc153b031e3a395c22ae056e21f28
 }
 ?>
 </div>
@@ -285,9 +195,3 @@ pg_close($dbconn);
 
 </body>
 </html>
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> eecfb95888cbc153b031e3a395c22ae056e21f28

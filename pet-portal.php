@@ -38,10 +38,39 @@
   </div>
  </nav>
 
-<table>
-<tr> <td colspan="2" style="background-color:#FFA500;">
-<h1>Welcome to Pets Paradise - Singapore's No. 1 Pet Caring portal!</h1>
-</td> </tr>
+<!-- PAGE HEADER -->
+<div class="jumbotron text-center" style="background-image: url('https://static.pexels.com/photos/89775/dog-hovawart-black-pet-89775.jpeg'); background-position: 0px -200px;">
+  <h1>Welcome to Pets Paradise.</h1>
+  <p>Find a trusted pet sitter near you!</p>
+  <br>
+  <!-- SEARCH FORM -->
+
+
+  <form class="search-form" action="/pet-portal.php#results">
+    <div class="col-md-12 text-center">
+      <input type="text" name="location" id="location" placeholder="Location">
+      <select name="quicklocation" onchange="this.form.submit()" style="color:black;">
+      <option value="" >-Quick Location Filter-</option>
+      <option value="Bishan">Bishan</option>
+      <option value="Toa Payoh">Toa Payoh</option>
+  <option value="Kent Ridge">Kent Ridge</option>
+  <option value="Jurong">Jurong</option>
+  <option value="Woodlands">Woodlands</option>
+  <option value="Pasir Ris">Pasir Ris</option>
+
+
+
+      <input type="text" name="breed" id="breed" placeholder="Pet Breed">
+          <input type="text" name="name" id="name" placeholder="Caretaker's name">
+        </div>
+        <div class="row">
+          <input type="submit" name="formSubmit" value="Find a Sitter" class="btn btn-default btn-lg" id="input-submit">
+        </div>
+  </form>
+
+<hr style="max-width:50%;">
+
+
 
 <?php
 $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar.elephantsql.com:5432/plwneqlk")
@@ -57,29 +86,24 @@ $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 $row = pg_fetch_row($result);
 $averageBid = $row[0];
 
+<<<<<<< HEAD
 echo "<td>" . "The highest bid is currently $" . $highestBid . ", and the average bid is $" . number_format((float)$averageBid, 2, '.', '')  . "! Join us and earn a quick buck now!" . "</td>";
 session_start();
 echo $_SESSION['login_user'];
+=======
+>>>>>>> eecfb95888cbc153b031e3a395c22ae056e21f28
 ?>
+<div class="row text-center" style="padding-top:10px;">
+  <p style="font-size:18px;">
+<?php echo "The highest bid is currently <strong>$" . $highestBid . "</strong>, and the average bid is <strong>$" . number_format((float)$averageBid, 2, '.', '')."</strong>.";
+?></p>
+<p style="font-size:16px;">Join us and earn a quick buck now!</p>
+<a href="/register.php" class="btn btn-default btn-lg sitter-btn">Become a Sitter</a>
 
-<tr>
-<td style="background-color:#eeeeee;">
-<form>
-        Caretaker's name: <input type="text" name="name" id="name">
-        Pet breed: <input type="text" name="breed" id="breed">
-        Location: <input type="text" name="location" id="location">
-        Quick Location filter: <select name="quicklocation" onchange="this.form.submit()">
-        <option value="">-Select Location-</option>
-        <option value="Bishan">Bishan</option>
-        <option value="Toa Payoh">Toa Payoh</option>
-		<option value="Kent Ridge">Kent Ridge</option>
-		<option value="Jurong">Jurong</option>
-		<option value="Woodlands">Woodlands</option>
-		<option value="Pasir Ris">Pasir Ris</option>
-        <input type="submit" name="formSubmit" value="Search" >
-</form>
-<?php
+</div>
+</div>
 
+<<<<<<< HEAD
 if(isset($_GET['formSubmit'])) 
 {
     $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['location']."%')) AND (isA = 'caretaker' OR isA = 'both')";
@@ -158,20 +182,112 @@ if(isset($_GET['formSubmit']))
     echo "</table>";
     
     pg_free_result($result);
+=======
+
+<div class="row"  id='results'>
+  <div class="col-md-10 col-md-offset-1">
+
+<?php
+if(isset($_GET['formSubmit']) ||  isset($_GET['quicklocation'])) {
+  
+    if ($_GET['quicklocation'] == 'Bishan')
+    {
+      echo "<h2>Showing Results in Bishan</h2>";
+      $query = "SELECT userid, name, email, description FROM Bishan_caretakers";
+    } elseif ($_GET['quicklocation'] == 'Toa Payoh')
+    {
+      echo "<h2>Showing Results in Toa Payoh</h2>";
+       $query = "SELECT userid, name, email, description FROM Toa_payoh_caretakers";
+    } elseif ($_GET['quicklocation'] == 'Kent Ridge')
+    {
+      echo "<h2>Showing Results in Kent Ridge</h2>";
+      $query = "SELECT userid, name, email, description FROM Kent_ridge_caretakers";
+    } elseif ($_GET['quicklocation'] == 'Jurong')
+    {
+      echo "<h2>Showing Results in Jurong</h2>";
+      $query = "SELECT userid, name, email, description FROM Jurong_caretakers";
+    } elseif ($_GET['quicklocation'] == 'Woodlands')
+    {
+      echo "<h2>Showing Results in Woodlands</h2>";
+      $query = "SELECT userid, name, email, description FROM Woodlands_caretakers";
+    } elseif ($_GET['quicklocation'] == 'Pasir Ris')
+    {
+      echo "<h2>Showing Results in Pasir Ris</h2>";
+      $query = "SELECT userid, name, email, description FROM Pasir_ris_caretakers";
+    } else {
+      echo "<h2>Showing Results";
+      if(isset($_GET['name']) && $_GET['name'] !== '' && isset($_GET['breed']) && $_GET['breed'] !== '') {
+        echo " for " . $_GET['name']. " and " . $_GET['breed'];
+      } elseif (isset($_GET['name']) && $_GET['name'] !== '') {
+        echo " for " . $_GET['name'];
+      } elseif (isset($_GET['breed']) && $_GET['breed'] !== '') {
+        echo " for " . $_GET['breed'];
+      }
+      if(isset($_GET['location']) && $_GET['location'] !== '') {
+        echo " in ". $_GET['location'];
+      }
+      echo "</h2>";
+    $query = "SELECT userid, name, email, description FROM USERS WHERE ((name LIKE UPPER('%".$_GET['name']."%')OR UPPER (userid) LIKE UPPER('%".$_GET['name']."%')) AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['location']."%')) AND (isA = 'caretaker' OR isA = 'both')";
+  }
+      /** Debug mode
+      echo "<b>SQL:   </b>".$query."<br><br>";
+      **/
+      $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+      echo "<div class='panel panel-default'><table class='table table-striped table-hover table-bordered table-responsive'>
+      <thead class='thead-inverse'>
+      <tr>
+      <th>Username</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Description</th>
+      </tr>
+      </thead><tbody>";
+      while ($row = pg_fetch_row($result)){
+        echo "<tr>";
+        echo "<td><a href=profile.php?user=" . $row[0] . ">".$row[0]."</a></td>";
+        echo "<td>" . $row[1] . "</td>";
+        echo "<td>" . $row[2] . "</td>";
+          echo "<td>" . $row[3] . "</td>";
+        echo "</tr>";
+      }
+      echo "</tbody></table></div>";
+      pg_free_result($result);
+
+>>>>>>> eecfb95888cbc153b031e3a395c22ae056e21f28
 }
 ?>
+</div>
+</div>
 
-</td> </tr>
+
 <?php
 pg_close($dbconn);
 ?>
-<tr>
-<td colspan="2" style="background-color:#FFA500; text-align:center;"> Copyright &#169; CS2102
-</td> </tr>
-</table>
+
+
+
+
+<!-- FOOTER -->
+<section id="contact">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 text-center">
+              <h2 class="section-heading">A CS2102 Project</h2>
+              <hr class="primary">
+          </div>
+          <div class="col-lg-12 text-center">
+              <i class="fa fa-envelope-o fa-3x sr-contact"></i>
+              <p><a href="mailto:yongzhiyuan@u.nus.edu">Contact our group leader.</a></p>
+          </div>
+      </div>
+  </div>
+</section>
 
 </body>
 </html>
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> eecfb95888cbc153b031e3a395c22ae056e21f28
